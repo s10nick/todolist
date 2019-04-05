@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  padding: 2rem;
+}
+
+.input {
+  margin: 0.5rem 0 1rem 0;
+}
+
+.table {
+  display: flex;
+  flex: 1;
+  padding: 2rem;
+}
+
+.table table {
+  width: 100%;
+}
+
+.tcell {
+  text-align: center;
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>To do list</title>
+  <meta name="description" content="To do list">
+  <meta name="author" content="s10n">
+
+  <link rel="stylesheet" href="css/index.css">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="form">
+      Название: <input id="name" class="input" type="text" name="name">
+      Дата: <input id="date" class="input"type="date" name="date">
+      Задача: <textarea id="task" class="input" name="task"></textarea>
+      <button onclick="addTask()" class="btn">Сохранить</button>
+    </div>
+  
+    <div class="table">
+      <table dir="ltr" border="1">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Название</th>
+            <th>Дата</th>
+            <th>Задача</th>
+            <th>Статус</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <script src="js/index.js"></script>
+</body>
+</html>
