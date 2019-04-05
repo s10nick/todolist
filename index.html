@@ -22,6 +22,12 @@
     </div>
   
     <div class="table">
+      <div class="table-control">
+        <button onclick="sortByName()" class="btn">Сортировать по названию &#8593;</button>
+        <button onclick="sortByNameReverse()" class="btn">Сортировать по названию &#8595;</button>
+        <button onclick="sortByDate()" class="btn">Сортировать по дате &#8593;</button>
+        <button onclick="sortByDateReverse()" class="btn">Сортировать по дате &#8595;</button>
+      </div>
       <table dir="ltr" border="1">
         <thead>
           <tr>
@@ -30,6 +36,7 @@
             <th>Дата</th>
             <th>Задача</th>
             <th>Статус</th>
+            <th>#</th>
           </tr>
         </thead>
         <tbody id="table-body">

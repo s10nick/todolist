@@ -1,4 +1,4 @@
-let editableTaskId = null
+let editableTaskId = null, editableTaskStatus = null
 
 const tableBody = document.getElementById('table-body')
 
@@ -9,7 +9,10 @@ const renderTable = () => {
   JSON.parse(localStorage.getItem('list')).map(function (value, key) {
     let
       tr = document.createElement('tr')
-      td = document.createElement('td')
+      td = document.createElement('td'),
+      statusWork = value.status === 'work' ? 'selected' : '',
+      statusExpected = value.status === 'expected' ? 'selected' : '',
+      statusCompleted = value.status === 'completed' ? 'selected' : ''
 
       td.innerHTML = value.edit ? `
         <p>(Отредактировано)</p>
@@ -17,21 +20,26 @@ const renderTable = () => {
 
       tr.innerHTML = `
         <td class="tcell">
-          <button onclick="editTask(${key})" class="btn">Редактировать</button>
+          <button id="task-edit-btn-${key}" onclick="editTask(${key})" class="btn">Редактировать</button>
         </td>
         <td class="tcell">${value.name}</td>
         <td class="tcell">${value.date}</td>
         <td class="tcell">${value.task}</td>
         <td class="tcell">
-          <select>
-            <option value="expected">Ожидается</option>
-            <option value="work">В работе</option>
-            <option value="completed">Выполнено</option>
+          <select id="task-status-${key}" onchange="editTask(${key}), addTask()">
+            <option ${statusExpected} value="expected">Ожидается</option>
+            <option ${statusWork} value="work">В работе</option>
+            <option ${statusCompleted} value="completed">Выполнено</option>
           </select>
         </td>
       `
       tr.appendChild(td)
       tableBody.appendChild(tr)
+
+      if (value.status === 'completed') {
+        document.getElementById(`task-edit-btn-${key}`).disabled = true
+        document.getElementById(`task-status-${key}`).disabled = true
+      }
   })
 }
 
@@ -41,7 +49,7 @@ const getformData = () => {
     name = document.getElementById('name').value,
     date = document.getElementById('date').value,
     task = document.getElementById('task').value,
-    status = editableTaskId ? currentStorage[editableTaskId].status : 'expected',
+    status = 'expected',
     edit = false  
 
   return [{ name, date, task, status, edit }]
@@ -49,12 +57,14 @@ const getformData = () => {
 
 const editTask = (id) => {
   let
-    currentStorage = JSON.parse(window.localStorage.getItem('list'))
+    currentStorage = JSON.parse(window.localStorage.getItem('list')),
+    status = document.getElementById(`task-status-${id}`).value
 
     document.getElementById('name').value = currentStorage[id].name
     document.getElementById('date').value = currentStorage[id].date
     document.getElementById('task').value = currentStorage[id].task
 
+    editableTaskStatus = status
     editableTaskId = id
 }
 
@@ -65,7 +75,8 @@ const addTask = async () => {
 
   if (Number.isInteger(editableTaskId)) {
     currentStorage.splice(editableTaskId, 1)
-    currentFormData[0].edit = true 
+    currentFormData[0].edit = true
+    currentFormData[0].status = editableTaskStatus 
   }
 
   editableTaskId = null
@@ -92,5 +103,61 @@ const refreshForm = () => {
   document.getElementById('date').value = null
   document.getElementById('task').value = '' 
 }
+
+const sortByName = () => {
+  let
+    currentStorage = JSON.parse(window.localStorage.getItem('list'))
+
+    currentStorage.sort((a, b) => {
+      if(a.name < b.name) return -1
+      if(a.name > b.name) return 1
+    })
+
+    window.localStorage.setItem('list', JSON.stringify([...currentStorage]))
+
+    renderTable()
+}
+
+const sortByNameReverse = () => {
+  let
+    currentStorage = JSON.parse(window.localStorage.getItem('list'))
+
+    currentStorage.sort((a, b) => {
+      if(a.name < b.name) return 1
+      if(a.name > b.name) return -1
+    })
+
+    window.localStorage.setItem('list', JSON.stringify([...currentStorage]))
+
+    renderTable()
+}
+
+const sortByDate = () => {
+  let
+    currentStorage = JSON.parse(window.localStorage.getItem('list'))
+
+    currentStorage.sort((a, b) => {
+      return new Date(a.date) - new Date(b.date)
+    })
+
+    window.localStorage.setItem('list', JSON.stringify([...currentStorage]))
+
+    renderTable()
+}
+
+const sortByDateReverse = () => {
+  let
+    currentStorage = JSON.parse(window.localStorage.getItem('list'))
+
+    currentStorage.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date)
+    })
+
+    window.localStorage.setItem('list', JSON.stringify([...currentStorage]))
+
+    renderTable()
+}
+
+sortByDate()
 
 renderTable()

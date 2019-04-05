@@ -17,10 +17,15 @@
   display: flex;
   flex: 1;
   padding: 2rem;
+  flex-direction: column;
 }
 
 .table table {
   width: 100%;
+}
+
+.table-control {
+  display: flex;   
 }
 
 .tcell {
