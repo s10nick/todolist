@@ -158,6 +158,4 @@ const sortByDateReverse = () => {
     renderTable()
 }
 
-sortByDate()
-
 renderTable()
